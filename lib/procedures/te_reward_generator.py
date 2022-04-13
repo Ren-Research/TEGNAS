@@ -256,12 +256,12 @@ class Buffer_Reward_Generator(object):
         import pickle
         
         if verbose:
-            pickle.dump(self._buffers['ntk'][-self._buffer_length:], open("./ntk.pickle", "wb"))  # save it into a file named save
-            pickle.dump(self._buffers_change['ntk'][-self._buffer_length:], open("./ntk_change.pickle", "wb"))  # save it into a file named save
-            pickle.dump(self._buffers['region'][-self._buffer_length:], open("./regions.pickle", "wb"))  # save it into a file named save
-            pickle.dump(self._buffers_change['region'][-self._buffer_length:], open("./regions_change.pickle", "wb"))  # save it into a file named save
-            pickle.dump(self._buffers['mse'][-self._buffer_length:], open("./mse.pickle", "wb"))  # save it into a file named save
-            pickle.dump(self._buffers_change['mse'][-self._buffer_length:], open("./mse_change.pickle", "wb"))  # save it into a file named save
+            pickle.dump(self._buffers['ntk'], open("./ntk.pickle", "wb"))  # save it into a file named save
+            pickle.dump(self._buffers_change['ntk'], open("./ntk_change.pickle", "wb"))  # save it into a file named save
+            pickle.dump(self._buffers['region'], open("./regions.pickle", "wb"))  # save it into a file named save
+            pickle.dump(self._buffers_change['region'], open("./regions_change.pickle", "wb"))  # save it into a file named save
+            pickle.dump(self._buffers['mse'], open("./mse.pickle", "wb"))  # save it into a file named save
+            pickle.dump(self._buffers_change['mse'], open("./mse_change.pickle", "wb"))  # save it into a file named save
         
         # reward larger the better
         return reward

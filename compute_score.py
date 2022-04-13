@@ -248,7 +248,7 @@ def main(xargs, nas_bench):
             accuracy_history.append(accuracy)
             logger.writer.add_scalar("accuracy/search", accuracy, step_current)
             _start_time = time.time()
-            if i == len(all_str) - 1:
+            if i % 100 == 0::
                 reward = te_reward_generator.step(arch, verbose=True)
             else:
                 reward = te_reward_generator.step(arch, verbose=False)
