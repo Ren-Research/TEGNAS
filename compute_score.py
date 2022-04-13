@@ -227,14 +227,14 @@ def main(xargs, nas_bench):
     time_proxy_total = 0
     total_steps = 500
     step_current = 0 # for tensorboard
-    te_reward_generator = Buffer_Reward_Generator(xargs, xargs.search_space_name, search_space, train_loader, valid_loader, class_num)
+    te_reward_generator = Buffer_Reward_Generator(xargs, xargs.search_space_name, search_space, train_data, valid_data, class_num)
     
     import pickle
     all_str = pickle.load(open("./all_str.pickle", "rb"))
     acc = pickle.load(open("./acc.pickle", "rb"))
     
     for i in range(len(all_str)):
-        print("<< ============== JOB (PID = %d) %s ============== >>"%(PID, '/'.join(xargs.save_dir.split("/")[-5:])))
+        print(i, "<< ============== JOB (PID = %d) %s ============== >>"%(PID, '/'.join(xargs.save_dir.split("/")[-5:])))
         log_prob, action = select_action(policy)
         print(action)
         #arch = policy.generate_arch(action)  # CellStructure object for nas-bench-201, arch_params (Tensor) for DARTS
@@ -268,22 +268,22 @@ def main(xargs, nas_bench):
             logger.writer.add_scalar("TE/MSE", te_reward_generator._buffers['mse'][-1], step_current)
             logger.writer.add_scalar("reinforce/entropy", sum([-(torch.log(prob) * prob).sum(1).mean(0) for prob in probs])/2, step_current)
             
-        logger.writer.add_scalar("reward/reward", reward, step_current)
-        
-        trace.append((reward, arch))
-        baseline.update(reward)
-        # calculate loss
-        policy_loss = ( -log_prob * (reward - baseline.value()) ).sum()
-        optimizer.zero_grad()
-        policy_loss.backward()
-        optimizer.step()
-        step_current += 1
-        logger.log('step [{:3d}] : average-reward={:.3f} : policy_loss={:.4f} : {:}'.format(_step, baseline.value(), policy_loss.item(), policy.genotype()))
-        if xargs.search_space_name == 'nas-bench-201':
-            arch_idx = nas_bench.query_index_by_arch(policy.genotype())
-            archinfo = nas_bench.query_meta_info_by_index(arch_idx)
-            accuracy = archinfo.get_metrics(dataname, 'x-valid')['accuracy']
-            logger.log('step [{:3d}] : accuracy {}'.format(_step, accuracy))
+#        logger.writer.add_scalar("reward/reward", reward, step_current)
+#        
+#        trace.append((reward, arch))
+#        baseline.update(reward)
+#        # calculate loss
+#        policy_loss = ( -log_prob * (reward - baseline.value()) ).sum()
+#        optimizer.zero_grad()
+#        policy_loss.backward()
+#        optimizer.step()
+#        step_current += 1
+#        logger.log('step [{:3d}] : average-reward={:.3f} : policy_loss={:.4f} : {:}'.format(_step, baseline.value(), policy_loss.item(), policy.genotype()))
+#        if xargs.search_space_name == 'nas-bench-201':
+#            arch_idx = nas_bench.query_index_by_arch(policy.genotype())
+#            archinfo = nas_bench.query_meta_info_by_index(arch_idx)
+#            accuracy = archinfo.get_metrics(dataname, 'x-valid')['accuracy']
+#            logger.log('step [{:3d}] : accuracy {}'.format(_step, accuracy))
             
     end_time = time.time()
     logger.log('REINFORCE finish with {:} steps | time cost {:.1f} s'.format(total_steps, end_time-start_time))
