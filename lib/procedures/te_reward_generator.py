@@ -232,7 +232,7 @@ class Buffer_Reward_Generator(object):
                 var = (self._buffers[_type][-1] - self._buffers[_type][-2]) / (max(self._buffers[_type][-self._buffer_length:]) - min(self._buffers[_type][-self._buffer_length:]) + 1e-6)
                 self._buffers_change[_type].append(var)
 
-    def step(self, arch, mask=True, verbose=False):
+    def step(self, arch, mask=True, verbose=True):
         if mask:
             if self._space_name == 'nas-bench-201' and isinstance(arch, str):
                 arch_parameters = self.arch_str2mask_201(arch)
