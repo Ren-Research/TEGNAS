@@ -250,7 +250,19 @@ class Buffer_Reward_Generator(object):
             print("Regions change buffer:", self._buffers_change['region'][-self._buffer_length:])
             print("MSE buffer:", self._buffers['mse'][-self._buffer_length:])
             print("MSE change buffer:", self._buffers_change['mse'][-self._buffer_length:])
+            
         reward = self.get_reward()
+        
+        import pickle
+        
+        if verbose:
+            pickle.dump(self._buffers['ntk'][-self._buffer_length:], open("./ntk.pickle", "wb"))  # save it into a file named save
+            pickle.dump(self._buffers_change['ntk'][-self._buffer_length:], open("./ntk_change.pickle", "wb"))  # save it into a file named save
+            pickle.dump(self._buffers['region'][-self._buffer_length:], open("./regions.pickle", "wb"))  # save it into a file named save
+            pickle.dump(self._buffers_change['region'][-self._buffer_length:], open("./regions_change.pickle", "wb"))  # save it into a file named save
+            pickle.dump(self._buffers['mse'][-self._buffer_length:], open("./mse.pickle", "wb"))  # save it into a file named save
+            pickle.dump(self._buffers_change['mse'][-self._buffer_length:], open("./mse_change.pickle", "wb"))  # save it into a file named save
+        
         # reward larger the better
         return reward
 
@@ -266,3 +278,4 @@ class Buffer_Reward_Generator(object):
         for _idx in range(num_samples):
             rankings_all.append(sum([ rankings[_type][_idx] for _type in rankings.keys() ]))
         return np.argmin(rankings_all)
+    

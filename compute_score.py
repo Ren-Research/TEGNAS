@@ -248,7 +248,10 @@ def main(xargs, nas_bench):
             accuracy_history.append(accuracy)
             logger.writer.add_scalar("accuracy/search", accuracy, step_current)
             _start_time = time.time()
-            reward = te_reward_generator.step(arch)
+            if i == len(all_str) - 1:
+                reward = te_reward_generator.step(arch, verbose=True)
+            else:
+                reward = te_reward_generator.step(arch, verbose=False)
             logger.writer.add_scalar("TE/NTK", te_reward_generator._buffers['ntk'][-1], step_current)
             logger.writer.add_scalar("TE/Linear_Regions", te_reward_generator._buffers['region'][-1], step_current)
             logger.writer.add_scalar("TE/MSE", te_reward_generator._buffers['mse'][-1], step_current)
