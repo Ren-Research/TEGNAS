@@ -39,7 +39,7 @@ core_cmd = "CUDA_VISIBLE_DEVICES={gpuid} OMP_NUM_THREADS=4 python ./compute_scor
 --search_space_name {space} \
 --super_type {super_type} \
 --arch_nas_dataset {TORCH_HOME}/NAS-Bench-201-v1_0-e61699.pth \
---workers 2 --rand_seed {seed} \
+--workers 1 --rand_seed {seed} \
 --learning_rate {LR} --EMA_momentum 0.9 \
 --timestamp {timestamp} \
 ".format(
